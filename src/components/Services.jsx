@@ -18,6 +18,33 @@ const Services = () => {
   const categoryContainerRef = useRef(null)
   const [activeIndex, setactiveIndex] = useState(0)
   const [isSticky, setIsSticky] = useState(false)
+  const categoryRefs = useRef([]);
+
+useEffect(()=>{
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      const index = serviceRefs.current.indexOf(entry.target)
+      if(entry.isIntersecting){
+        setactiveIndex(index)
+      }
+    })
+  },{rootMargin:'0px', threshold:0.5})
+
+  serviceRefs.current.forEach((el)=> observer.observe(el))
+
+  return ()=>{
+    observer.disconnect()
+  }
+},[])
+
+useEffect(() => {
+  if (categoryRefs.current[activeIndex]) {
+    categoryRefs.current[activeIndex].scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+    });
+  }
+}, [activeIndex]);
 
   const  scrollToService = (index) =>{
     setactiveIndex(index)
@@ -33,7 +60,6 @@ const Services = () => {
 
  
   
-  console.log(categoryContainerRef.current)
   function scrollLeft(){
     if(categoryContainerRef.current){
 
@@ -144,6 +170,7 @@ margin: 20px 0;
   }
 
   .category{
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -154,6 +181,8 @@ margin: 20px 0;
     z-index: 1000;
     background: white;
     padding: 10px 0;
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2); 
+ 
     ul{
         display: flex;
         justify-content: space-between;
@@ -165,9 +194,10 @@ margin: 20px 0;
         list-style: none;
         margin: 0;
         gap: 5px;
-
+        overflow: hidden;
         scrollbar-width: none;
         -ms-overflow-style: none;
+        
         
           
         li{
@@ -202,6 +232,19 @@ margin: 20px 0;
   .arrow-btn{
       display: flex;
       margin-left: 5px;
+
+      .left-arrow{
+        position: relative;
+        &::before{
+          content: "";
+          height: 100%;
+          width: 40px;
+          position: absolute;
+          left: -40px;
+          top: 0;
+          background: linear-gradient(to right,rgba(255, 255, 255, .02) 0%, rgba(255, 255, 255,1) 100%);
+        }
+      }
       span{
           cursor: pointer;
           font-size: 16px;
