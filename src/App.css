@@ -1,0 +1,85 @@
+#root {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 2rem;
+}
+
+.mainPage {
+  display: flex;
+
+  justify-content: space-between;
+}
+/* Featured */
+
+.featured {
+  z-index: 0;
+
+  .heading {
+    margin: 20px 0;
+    font-size: 2em;
+  }
+}
+
+.box-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .box {
+    padding: 20px;
+    border: 1px solid #b4b1b1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #f3f3f3;
+    }
+    h6 {
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 0.9em;
+      font-weight: 400;
+      color: #636161;
+    }
+
+    .price {
+      font-weight: 600;
+      font-size: 1em;
+      margin-top: 10px;
+      color: #212121;
+    }
+  }
+}
+
+/* haircut */
+
+.haircut {
+  .heading-para {
+    font-size: .5em;
+  }
+}
+
+/* cardBox */
+.cardBox {
+  position: fixed;
+  top: 20%;
+  right: 14%;
+  border: 1px solid #212121;
+  min-width: 430px;
+  min-height: 430px;
+}
+
+/* media query */
+
+@media (width <= 1024px) {
+  .cardBox {
+    display: none;
+  }
+
+  .services {
+    max-width: 100% !important;
+  }
+}
