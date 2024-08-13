@@ -17,10 +17,7 @@ const Services = () => {
   const [activeIndex, setactiveIndex] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
   const categoryRefs = useRef([]);
-  const [scrollPosition, setscrollPosition] = useState(0)
 
-
-  console.log(scrollPosition)
   useEffect(() => {
     const handleIntersection = (entries) => {
       entries.forEach((entry) => {
@@ -44,25 +41,15 @@ const Services = () => {
     };
   }, []);
 
-
-
-  useEffect(()=>{
-    const categoryElem = categoryContainerRef.current?.querySelectorAll('li')
-    if(categoryElem){
-      categoryRefs.current= Array.from(categoryElem)
+  useEffect(() => {
+    const categoryElem = categoryContainerRef.current?.querySelectorAll("li");
+    if (categoryElem) {
+      categoryRefs.current = Array.from(categoryElem);
     }
-
-    if(categoryRefs.current[activeIndex]){
-     setscrollPosition(categoryRefs.current[activeIndex])
-    }
-  },[])
-
-
-
+  }, []);
 
   const scrollToService = (index) => {
     setactiveIndex(index);
-    setscrollPosition(categoryRefs.current[index].offsetTop)
 
     const targetElement = serviceRefs.current[index];
     if (targetElement) {
@@ -94,24 +81,11 @@ const Services = () => {
     }
   };
 
-  
-
-  useEffect(()=>{
-    if(scrollPosition, activeIndex){
-      window.scrollTo({
-        top: scrollPosition,
-        behavior:'smooth'
-      })
-    }else{
-      console.log('sorry')
-    }
-  },[])
-
   function scrollLeft() {
     if (categoryContainerRef.current) {
-      categoryContainerRef.current.scrollTo({
-        top: categoryContainerRef.current.offsetTop,
-        left: window.scrollX - 300,
+      categoryContainerRef.current.scrollBy({
+        top: 0,
+        left: -300,
         behavior: "smooth",
       });
     }
@@ -119,9 +93,9 @@ const Services = () => {
 
   function scrollRight() {
     if (categoryContainerRef.current) {
-      categoryContainerRef.current.scrollTo({
+      categoryContainerRef.current.scrollBy({
         top: 0,
-        left: window.scrollX +  300,
+        left: 300,
         behavior: "smooth",
       });
     }
@@ -137,6 +111,25 @@ const Services = () => {
           ref.offsetTop + ref.offsetHeight > scrollPosition
         ) {
           setactiveIndex(index);
+
+          const activeCategory = categoryRefs.current[index];
+          const categoryContainer = categoryContainerRef.current;
+
+          if (activeCategory && categoryContainer) {
+            const categoryRect = activeCategory.getBoundingClientRect();
+            const containerRect = categoryContainer.getBoundingClientRect();
+
+            if (
+              categoryRect.left < containerRect.left ||
+              categoryRect.right > containerRect.right
+            ) {
+              categoryContainer.scrollBy({
+                top: 0,
+                left: categoryRect.left - containerRect.left - 20,
+                behavior: "smooth",
+              });
+            }
+          }
         }
       });
     }
@@ -258,7 +251,7 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: 0.3s all ease;
+    transition: 0.2 all ease;
     position: sticky;
     height: 60px;
     top: 5%;
