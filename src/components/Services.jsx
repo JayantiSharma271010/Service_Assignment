@@ -20,22 +20,22 @@ const Services = () => {
   const [isSticky, setIsSticky] = useState(false)
   const categoryRefs = useRef([]);
 
-useEffect(()=>{
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach((entry)=>{
-      const index = serviceRefs.current.indexOf(entry.target)
-      if(entry.isIntersecting){
-        setactiveIndex(index)
-      }
-    })
-  },{rootMargin:'0px', threshold:0.5})
+// useEffect(()=>{
+//   const observer = new IntersectionObserver((entries)=>{
+//     entries.forEach((entry)=>{
+//       const index = serviceRefs.current.indexOf(entry.target)
+//       if(entry.isIntersecting){
+//         setactiveIndex(index)
+//       }
+//     })
+//   },{rootMargin:'0px', threshold:0.5})
 
-  serviceRefs.current.forEach((el)=> observer.observe(el))
+//   serviceRefs.current.forEach((el)=> observer.observe(el))
 
-  return ()=>{
-    observer.disconnect()
-  }
-},[])
+//   return ()=>{
+//     observer.disconnect()
+//   }
+// },[])
 
 useEffect(() => {
   if (categoryRefs.current[activeIndex]) {
